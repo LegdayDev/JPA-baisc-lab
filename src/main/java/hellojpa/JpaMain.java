@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
@@ -48,6 +49,28 @@ public class JpaMain {
              Member findMember = em.find(Member.class, 1L);
              findMember.setName("Messi");// 기존 이름은 Ronaldo 였다.
              */
+
+            //JPQL :
+            /**
+             * 전체 회원 검색
+             *
+             List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
+             for (Member member : result) {
+                System.out.println("member name = " + member.getName());
+             }
+             */
+
+            /**
+             * 회원검색(조건을 주고)
+             List<Member> result = em.createQuery("select m from Member m where m.name = :name" , Member.class)
+                                                  .setParameter("name","Ronaldo")
+                                                  .getResultList();
+             for (Member member : result) {
+                System.out.println("member name = " + member.getName());
+             }
+             */
+
+
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
             tx.rollback(); //문제가 생기면 rollback
