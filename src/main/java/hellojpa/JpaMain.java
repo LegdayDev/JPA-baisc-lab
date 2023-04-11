@@ -16,6 +16,7 @@ public class JpaMain {
         //비즈니스 로직을 실행하는 트랜잭션 단위는 EntityManager를 사용한다.
 
         EntityTransaction tx = em.getTransaction();
+
         tx.begin(); //트랜잭션이 시작
 
         try {
@@ -70,8 +71,19 @@ public class JpaMain {
              }
              */
 
+            //비영속 상태
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
 
+            //여기서부터 영속 상태
+            System.out.println("=== Before ===");
+            em.persist(member);
+            System.out.println("=== After ===");
+
+            System.out.println("==== commmit 시점에 DB로 SQL문이 내려감 ===");
             tx.commit(); //트랜잭션 종료
+
         }catch (Exception e){
             tx.rollback(); //문제가 생기면 rollback
         }finally {
