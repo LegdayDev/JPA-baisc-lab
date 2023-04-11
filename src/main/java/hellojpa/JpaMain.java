@@ -109,13 +109,23 @@ public class JpaMain {
 
             /**
              * 쓰기 지연
-             */
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(151L, "B");
+             Member member1 = new Member(150L, "A");
+             Member member2 = new Member(151L, "B");
 
-            em.persist(member1); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
-            em.persist(member2); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
-            System.out.println("===========================");
+             em.persist(member1); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
+             em.persist(member2); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
+             System.out.println("===========================");
+             //commit() 시점에 쿼리문이 나간다.
+             tx.commit(); //트랜잭션 종료
+             */
+
+            Member findMember = em.find(Member.class, 150L);
+            System.out.println("==== findMember.name 수정 전 ====");
+            System.out.println("findMember = " + findMember.getName());
+            System.out.println("==== findMember.name 수정 후 ====");
+            findMember.setName("zzzzzzzzzzz");
+            System.out.println("findMember = " + findMember.getName());
+            System.out.println("========================");
             //commit() 시점에 쿼리문이 나간다.
             tx.commit(); //트랜잭션 종료
 
