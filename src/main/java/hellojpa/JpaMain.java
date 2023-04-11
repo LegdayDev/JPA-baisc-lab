@@ -107,7 +107,16 @@ public class JpaMain {
              System.out.println("result = " + (findMember1 == findMember2));
              */
 
+            /**
+             * 쓰기 지연
+             */
+            Member member1 = new Member(150L, "A");
+            Member member2 = new Member(151L, "B");
 
+            em.persist(member1); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
+            em.persist(member2); //insert 쿼리문이 쓰기지연 Sql 저장소에 쌓임
+            System.out.println("===========================");
+            //commit() 시점에 쿼리문이 나간다.
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
