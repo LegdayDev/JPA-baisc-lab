@@ -51,7 +51,7 @@ public class JpaMain {
              findMember.setName("Messi");// 기존 이름은 Ronaldo 였다.
              */
 
-            //JPQL :
+            //JPQL
             /**
              * 전체 회원 검색
              *
@@ -131,11 +131,35 @@ public class JpaMain {
              System.out.println("========================");
              */
 
+            /**
+             * 엔티티 삭제(remove)
+             Member findMember = em.find(Member.class, 150L);
+             em.remove(findMember);
 
-            Member findMember = em.find(Member.class, 150L);
-            em.remove(findMember);
+             */
 
-            //commit() 시점에 쿼리문이 나간다.
+            /**
+             * 강제로 flush() 호출
+             * 트랜잭션 commit()전에 쿼리문이 날라가는걸 보고싶다면 ?
+             Member member = new Member(400L, "member@2400");
+             em.persist(member);
+
+             System.out.println("==========flush 호출===========");
+             em.flush(); //강제로 flush 호출되서 쿼리문이 db로 날라감
+             //commit() 시점에 쿼리문이 나간다.
+             System.out.println("============트랜잭션 commit전에 쿼리문 전송");
+             tx.commit(); //트랜잭션 종료
+             * JPQL 쿼리 실행시 플러시가 자동 호출
+             em.persist(memberA);
+             em.persist(memberB);
+             em.persist(memberC);
+
+             //중간에 JPQL 실행
+             query = em.createQuery("select m from Member m", Member.class);
+             List<Member> members= query.getResultList();
+             *
+             */
+
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
