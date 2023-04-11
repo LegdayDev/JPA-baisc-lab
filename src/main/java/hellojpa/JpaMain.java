@@ -90,18 +90,23 @@ public class JpaMain {
 
             /**
              * 1차 캐시에서 객체 조회
+             Member member = new Member();
+             member.setId(101L);
+             member.setName("Son");
+
+             em.persist(member);
+
+             Member findMember = em.find(Member.class, 101L);
+
+             System.out.println("findMember.id = " + findMember.getId());
+             System.out.println("findMember.name = " + findMember.getName());
+             * 똑같은 객체를 2번 조회하면 쿼리문은 1번만 나간다.
+             Member findMember1 = em.find(Member.class, 101L);
+             Member findMember2 = em.find(Member.class, 101L);
+
+             System.out.println("result = " + (findMember1 == findMember2));
              */
 
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("Son");
-
-            em.persist(member);
-
-            Member findMember = em.find(Member.class, 101L);
-
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
 
             tx.commit(); //트랜잭션 종료
 
