@@ -119,13 +119,22 @@ public class JpaMain {
              tx.commit(); //트랜잭션 종료
              */
 
+            /**
+             * 변경 감지(Dirty Checking)
+             * Java 객체를 수정하면 DB에 있는 실제 데이터도 수정이된다.commit() 시점에
+             Member findMember = em.find(Member.class, 150L);
+             System.out.println("==== findMember.name 수정 전 ====");
+             System.out.println("findMember = " + findMember.getName());
+             System.out.println("==== findMember.name 수정 후 ====");
+             findMember.setName("zzzzzzzzzzz");
+             System.out.println("findMember = " + findMember.getName());
+             System.out.println("========================");
+             */
+
+
             Member findMember = em.find(Member.class, 150L);
-            System.out.println("==== findMember.name 수정 전 ====");
-            System.out.println("findMember = " + findMember.getName());
-            System.out.println("==== findMember.name 수정 후 ====");
-            findMember.setName("zzzzzzzzzzz");
-            System.out.println("findMember = " + findMember.getName());
-            System.out.println("========================");
+            em.remove(findMember);
+
             //commit() 시점에 쿼리문이 나간다.
             tx.commit(); //트랜잭션 종료
 
