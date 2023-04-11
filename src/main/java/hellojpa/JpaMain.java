@@ -160,6 +160,13 @@ public class JpaMain {
              *
              */
 
+            Member findMember = em.find(Member.class, 2L); //이때 findMember가 영속상태가 된다.
+            findMember.setName("Cristiano");
+
+            em.detach(findMember); //준영속 상태로 전환
+
+            //트랜잭션 커밋을해도 아무일도 일어나지 않는다.
+            System.out.println("==================");
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
