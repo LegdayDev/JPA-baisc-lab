@@ -71,17 +71,38 @@ public class JpaMain {
              }
              */
 
-            //비영속 상태
+            /**
+             * 영속, 비영속 상태확인
+             * 실제 persist()시에는 영속성 컨텍스트에 저장
+             * commit() 시점에 insert 쿼리문이 DB로 전달
+             //비영속 상태
+             Member member = new Member();
+             member.setId(100L);
+             member.setName("HelloJPA");
+
+             //여기서부터 영속 상태
+             System.out.println("=== Before ===");
+             em.persist(member);
+             System.out.println("=== After ===");
+
+             System.out.println("==== commmit 시점에 DB로 SQL문이 내려감 ===");
+             */
+
+            /**
+             * 1차 캐시에서 객체 조회
+             */
+
             Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
+            member.setId(101L);
+            member.setName("Son");
 
-            //여기서부터 영속 상태
-            System.out.println("=== Before ===");
             em.persist(member);
-            System.out.println("=== After ===");
 
-            System.out.println("==== commmit 시점에 DB로 SQL문이 내려감 ===");
+            Member findMember = em.find(Member.class, 101L);
+
+            System.out.println("findMember.id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getName());
+
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
