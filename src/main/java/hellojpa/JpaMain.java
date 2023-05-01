@@ -174,6 +174,17 @@ public class JpaMain {
              System.out.println("==================");
              */
 
+            /**
+             * EnumType.ORDINAL 을 사용하면 안되는 이유
+             * ORDINAL : 숫자로 DB에 들어간다.(enum 값 순서대로)
+             * 만약 enum 타입을 추가하면 순서가 꼬인다.. DB에서 확인 불가
+             */
+            Member member = new Member();
+            member.setId(3L);
+            member.setUsername("Son");
+            member.setRoleType(RoleType.ADMIN);
+
+            em.persist(member);
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
