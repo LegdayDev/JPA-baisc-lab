@@ -178,6 +178,7 @@ public class JpaMain {
              * EnumType.ORDINAL 을 사용하면 안되는 이유
              * ORDINAL : 숫자로 DB에 들어간다.(enum 값 순서대로)
              * 만약 enum 타입을 추가하면 순서가 꼬인다.. DB에서 확인 불가
+             * STRING : enum 타입 이름으로 들어가기 때문에 추가,변경이 되도 인식가능
              */
             Member member = new Member();
             member.setId(3L);

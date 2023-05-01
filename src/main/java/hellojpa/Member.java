@@ -13,7 +13,7 @@ public class Member {
 
     private Integer age;
 
-    @Enumerated(EnumType.ORDINAL) //enum타입을 위해 사용
+    @Enumerated(EnumType.STRING) //enum타입을 위해 사용
     private RoleType roleType;
 
     @Temporal(TemporalType.TIMESTAMP)
