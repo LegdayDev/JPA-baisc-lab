@@ -1,26 +1,33 @@
 package hellojpa;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Member {
-
-    @Id //pk(기본키)를 지정하는 어노테이션
+    @Id
     private Long id;
 
-    private String name;
+    @Column(name = "name", nullable = false)//DB에서는 name이라는 컬럼명
+    private String username;
 
-    //JPA 는 내부적으로 리플렉션과 같은 동적으로 객체를 생성할 때가 있기에 기본생성자가 있어야한다.
+    private Integer age;
+
+    @Enumerated(EnumType.ORDINAL) //enum타입을 위해 사용
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate; //생성일자
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate; //수정일자
+
+    @Lob //큰 컨텐츠
+    private String description; //설명
+
     public Member() {
     }
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    //Getter, Setter..
     public Long getId() {
         return id;
     }
@@ -29,12 +36,51 @@ public class Member {
         this.id = id;
     }
 
-
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
