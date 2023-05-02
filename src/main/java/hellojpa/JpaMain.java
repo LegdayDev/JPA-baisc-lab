@@ -199,7 +199,43 @@ public class JpaMain {
              System.out.println("==============");
              */
 
+            /**
+             * SEQUENCE 전략
+             * persist() 시점에 DB에 있는 SEQUENCE 에서 Id값을 가져와서 영속성 컨텍스트에 저장한다.
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             System.out.println("==============");
+             em.persist(member);
+             System.out.println("member의 ID 값 : " + member.getId());
+             System.out.println("==============");
+             * 하지만 계속 DB에 있는 SEQUENCE 를 call하면 성능의 문제가 있다.
+             * allocationSize 를 통해서 성능개선이 가능하다.
+             * allocationSize 의 기본값은 50 이다. 즉, 미리 50의 사이즈를 콜하는거다.
+             * hibernate 쿼리문을 보면 MEMBER_SEQ가 2번 호출되었다.
+             * 왜냐하면 처음 생성당시에는 DB상에 SEQ는 1이다. 하지만 50씩을 땡겨와야해서 한번더 호출해서 DB SEQ는 51이되고
+             * 애플리케이션에서 seq는 1이 되는거다.
+             */
 
+            Member member1 = new Member();
+            member1.setUsername("Ronaldo");
+
+            Member member2 = new Member();
+            member2.setUsername("Messi");
+
+            Member member3 = new Member();
+            member3.setUsername("Neymar");
+
+            System.out.println("===============");
+
+            em.persist(member1); //1번 더비호출하고, 2번째 호출시에 DB seq는 51이되고
+            em.persist(member2); //여기서부터는 메모리에서 호출하므로 DB 입출력이 없어 성능개선이된다.
+            em.persist(member3);// 쭉쭉가다 51번을 만나면 다시 50개를 땡겨와야하므로 DB SEQ가 call이된다.
+
+            System.out.println("member1.getId() = " + member1.getId());
+            System.out.println("member2.getId() = " + member2.getId());
+            System.out.println("member3.getId() = " + member3.getId());
+
+            System.out.println("=================");
 
             tx.commit(); //트랜잭션 종료
 
