@@ -179,13 +179,28 @@ public class JpaMain {
              * ORDINAL : 숫자로 DB에 들어간다.(enum 값 순서대로)
              * 만약 enum 타입을 추가하면 순서가 꼬인다.. DB에서 확인 불가
              * STRING : enum 타입 이름으로 들어가기 때문에 추가,변경이 되도 인식가능
-             */
-            Member member = new Member();
-            member.setId(3L);
-            member.setUsername("Son");
-            member.setRoleType(RoleType.ADMIN);
+             Member member = new Member();
+             member.setId(3L);
+             member.setUsername("Son");
+             member.setRoleType(RoleType.ADMIN);
 
-            em.persist(member);
+             em.persist(member);
+             */
+
+            /**
+             * IDENTITY 전략
+             * id값은 null상태로 DB에 전송되고 DB에 Insert가 되면 ID값이 정해진다.
+             * 그래서 commit()시점이 아닌 persist() 시점에 insert문이 바로 나간다.
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             System.out.println("==============");
+             em.persist(member);
+             System.out.println("member의 ID 값 : " + member.getId());
+             System.out.println("==============");
+             */
+
+
+
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
