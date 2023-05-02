@@ -236,6 +236,7 @@ public class JpaMain {
              System.out.println("=================");
              */
 
+            //테스트
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
