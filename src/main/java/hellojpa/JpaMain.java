@@ -236,7 +236,26 @@ public class JpaMain {
              System.out.println("=================");
              */
 
-            //테스트
+            /**
+             * 단방향 연관관계
+             */
+
+            //저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team); //JPA 가 team의 pk값을 찾아서 등록
+            em.persist(member);
+
+            //조회
+            Member findMember = em.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam.getName() : " + findTeam.getName());
+
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
