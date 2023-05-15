@@ -5,15 +5,14 @@ import javax.persistence.*;
 @Entity
 public class Member {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name="USERNAME")
+    @Column(name = "USERNAME")
     private String username;
 
-    //    @Column(name = "TEAM_ID")
-//    private Long teamId;
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
@@ -41,4 +40,8 @@ public class Member {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+
+
+
 }
