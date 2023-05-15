@@ -257,6 +257,18 @@ public class JpaMain {
 
             /**
              * 양방향 연관관계
+             //저장
+             Team team = new Team();
+             team.setName("TeamA");
+             em.persist(team);
+
+             Member member = new Member();
+             member.setUsername("member1");
+             member.setTeam(team);
+             em.persist(member);
+
+             em.flush(); //쿼리문을 DB에 전송
+             em.clear(); //영속성 컨텍스트를 비운다.
              */
             
             //저장
@@ -268,17 +280,17 @@ public class JpaMain {
             member.setUsername("member1");
             member.setTeam(team);
             em.persist(member);
-            
-            em.flush(); //쿼리문을 DB에 전송
-            em.clear(); //영속성 컨텍스트를 비운다.
 
-            Member findMember = em.find(Member.class, member.getId());
+            team.getMembers().add(member);
+//            em.flush(); //쿼리문을 DB에 전송
+//            em.clear(); //영속성 컨텍스트를 비운다.
 
-            List<Member> members = findMember.getTeam().getMembers();
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
             for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
+                System.out.println("m.getUsername() = " + m.getUsername());;
             }
-
 
             tx.commit(); //트랜잭션 종료
 
