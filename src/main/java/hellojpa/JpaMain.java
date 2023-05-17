@@ -295,17 +295,6 @@ public class JpaMain {
 
              */
 
-            Member member = new Member();
-            member.setUsername("Ronaldo");
-            
-            em.persist(member);
-
-            Team team = new Team();
-            team.setName("Messi");
-            team.getMembers().add(member);
-
-            em.persist(team);
-
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
