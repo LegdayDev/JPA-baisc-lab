@@ -304,7 +304,7 @@ public class JpaMain {
             team.setName("Messi");
             team.getMembers().add(member);
 
-            em.persist(team );
+            em.persist(team);
 
             tx.commit(); //트랜잭션 종료
 
