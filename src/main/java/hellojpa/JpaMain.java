@@ -269,28 +269,42 @@ public class JpaMain {
 
              em.flush(); //쿼리문을 DB에 전송
              em.clear(); //영속성 컨텍스트를 비운다.
+
+             //저장
+             Team team = new Team();
+             team.setName("TeamA");
+             em.persist(team);
+
+             Member member = new Member();
+             member.setUsername("member1");
+             member.changeTeam(team);
+             em.persist(member);
+
+             //            team.getMembers().add(member); //연관관계 편의메서드를 작성하면 안적어도 된다.
+             //            em.flush(); //쿼리문을 DB에 전송
+             //            em.clear(); //영속성 컨텍스트를 비운다.
+
+             Team findTeam = em.find(Team.class, team.getId());
+             List<Member> members = findTeam.getMembers();
+
+             System.out.println("===============");
+             for (Member m : members) {
+             System.out.println("m.getUsername() = " + m.getUsername());;
+             }
+             System.out.println("===============");
+
              */
-            
-            //저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
-            member.setTeam(team);
+            member.setUsername("Ronaldo");
+            
             em.persist(member);
 
+            Team team = new Team();
+            team.setName("Messi");
             team.getMembers().add(member);
-//            em.flush(); //쿼리문을 DB에 전송
-//            em.clear(); //영속성 컨텍스트를 비운다.
 
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());;
-            }
+            em.persist(team );
 
             tx.commit(); //트랜잭션 종료
 

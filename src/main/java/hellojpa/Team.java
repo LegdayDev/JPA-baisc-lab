@@ -12,9 +12,9 @@ public class Team {
     private Long id;
     private String name;
 
-    //양방향 연관관계 설정
-    @OneToMany(mappedBy = "team")//Member객체의 변수명과 같이해준다.
-    private List<Member> members = new ArrayList<>(); //add시에 nullpointer가 안뜬다.(관례임)
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
+    private List<Member> members = new ArrayList<>();
 
     public Long getId() {return id;}
 
