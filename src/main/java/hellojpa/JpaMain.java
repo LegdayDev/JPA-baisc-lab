@@ -295,6 +295,24 @@ public class JpaMain {
 
              */
 
+            /**
+             * 상속관계 매핑
+             */
+
+            Movie movie = new Movie();
+            movie.setDirector("Ronaldo");
+            movie.setActor("Cristiano");
+
+            movie.setName("호날두");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+            
+            em.flush();
+            em.clear();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
