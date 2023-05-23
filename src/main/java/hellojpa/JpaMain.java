@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -296,23 +297,34 @@ public class JpaMain {
              */
 
             /**
-             * 상속관계 매핑
+             * 상속관계 매핑(조인, 단일테이블, 구현클래스별 테이블)
+             * 조인 : 정규화가 잘 되있고 저장공간이 효율
+             * 단일테이블 : JPA에서 기본전략, 조인이 없으므로 조회성능이 빠르다
+             Movie movie = new Movie();
+             movie.setDirector("Ronaldo");
+             movie.setActor("Cristiano");
+
+             movie.setName("호날두");
+             movie.setPrice(10000);
+
+             em.persist(movie);
+
+             em.flush();
+             em.clear();
+
+             Movie findMovie = em.find(Movie.class, movie.getId());
+             System.out.println("findMovie = " + findMovie);
              */
 
-            Movie movie = new Movie();
-            movie.setDirector("Ronaldo");
-            movie.setActor("Cristiano");
+            Member member = new Member();
+            member.setUsername("Lionel");
+            member.setCreatedBy("Messi");
+            member.setCreatedDate(LocalDateTime.now());
+            em.persist(member);
 
-            movie.setName("호날두");
-            movie.setPrice(10000);
-
-            em.persist(movie);
-            
             em.flush();
             em.clear();
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = " + findMovie);
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
