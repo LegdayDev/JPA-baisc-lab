@@ -316,22 +316,59 @@ public class JpaMain {
              System.out.println("findMovie = " + findMovie);
              */
 
-            Member member = new Member();
-            member.setUsername("Lionel");
-            member.setCreatedBy("Messi");
-            member.setCreatedDate(LocalDateTime.now());
-            em.persist(member);
+            /**
+             * 공통속성 처리
+             * @MappedSuperclass 어노테이션이 붙은 클래스를 이용하여 공통속성을 따로 빼줄 수 있다.
+             */
 
-            em.flush();
-            em.clear();
+            /**
+             * 프록시
+             Member 엔티티 안에 Team 엔티티와 연관관계가 맺어져 있다.
+             Member 엔티티를 조회할때 Team 엔티티도 같이 조회가 되는 경우를 막고 싶다. -> 프록시 이용
+             * 프록시 객체 확인해보기
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+
+             em.persist(member);
+
+             em.flush(); //SQL 즉시 전송
+             em.clear(); //영속성 컨텍스트 비우기
+
+             Member findMember = em.getReference(Member.class, member.getId());
+             System.out.println("findMember = " + findMember.getClass());
+             System.out.println("findMember = " + findMember.getId());
+             System.out.println("findMember = " + findMember.getUsername());
+             *
+             * JPA는 객체 비교시 참(true)를 보장해준다.
+             * 두 개의 객체중 첫 객체는 find 두번쨰 객체는 getReference로 호출하면 둘다 원본 엔티티로 반환한다.
+             * 두 개의 객체중 첫 객체를 getReference 두번째 객체는 find로 호출하면 둘다 프록시 객체로 반환한다.
+             *
+             * 준영속 상태인 객체를 초기화하면 LazyInitializationException 예외를 일으킨다.
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+
+             em.persist(member);
+
+             em.flush(); //SQL 즉시 전송
+             em.clear(); //영속성 컨텍스트 비우기
+
+             Member refMember = em.getReference(Member.class, member.getId());
+             System.out.println("refMember = " + refMember.getClass());
+
+             em.detach(refMember); //준영속 상태로 만든다.
+
+             System.out.println("refMember.getUsername() = " + refMember.getUsername());
+             */
 
             tx.commit(); //트랜잭션 종료
 
         }catch (Exception e){
             tx.rollback(); //문제가 생기면 rollback
+            e.printStackTrace();
         }finally {
             em.close();
         }
         emf.close(); //애플리케이션이 종료된다.
     }
+
 }
