@@ -16,7 +16,7 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID") //연관관계의 주인이 아닌 읽기전용매핑으로 만듬.
     private Team team;
 

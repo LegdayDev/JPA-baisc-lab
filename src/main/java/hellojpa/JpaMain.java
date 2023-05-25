@@ -376,7 +376,7 @@ public class JpaMain {
             System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
 
             System.out.println("====================");
-            m.getTeam().getName();
+            System.out.println(m.getTeam().getName());
             System.out.println("====================");
 
             tx.commit(); //트랜잭션 종료
