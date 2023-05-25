@@ -359,9 +359,27 @@ public class JpaMain {
 
              System.out.println("refMember.getUsername() = " + refMember.getUsername());
              */
+            Team team = new Team();
+            team.setName("ManUtd");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("Ronaldo");
+            member.setTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member m = em.find(Member.class, member.getId());
+
+            System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
+
+            System.out.println("====================");
+            m.getTeam().getName();
+            System.out.println("====================");
 
             tx.commit(); //트랜잭션 종료
-
         }catch (Exception e){
             tx.rollback(); //문제가 생기면 rollback
             e.printStackTrace();
