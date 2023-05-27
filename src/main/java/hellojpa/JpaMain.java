@@ -359,24 +359,33 @@ public class JpaMain {
 
              System.out.println("refMember.getUsername() = " + refMember.getUsername());
              */
-            Team team = new Team();
-            team.setName("ManUtd");
-            em.persist(team);
+            Team team1 = new Team();
+            team1.setName("ManUtd");
+            em.persist(team1);
+
+            Team team2 = new Team();
+            team2.setName("ManCity");
+            em.persist(team2);
 
             Member member = new Member();
             member.setUsername("Ronaldo");
-            member.setTeam(team);
+            member.setTeam(team1);
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUsername("Haland");
+            member2.setTeam(team2);
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member.getId());
-
-            System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
+//            Member m = em.find(Member.class, member.getId());
+            List<Member> result = em.createQuery("select m from Member m ", Member.class).getResultList();
 
             System.out.println("====================");
-            System.out.println(m.getTeam().getName());
+            System.out.println("team1.getName() = " + team1.getName());
+            System.out.println("team2.getName() = " + team2.getName());
             System.out.println("====================");
 
             tx.commit(); //트랜잭션 종료
