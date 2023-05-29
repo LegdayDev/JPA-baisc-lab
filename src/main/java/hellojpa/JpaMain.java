@@ -359,34 +359,67 @@ public class JpaMain {
 
              System.out.println("refMember.getUsername() = " + refMember.getUsername());
              */
-            Team team1 = new Team();
-            team1.setName("ManUtd");
-            em.persist(team1);
 
-            Team team2 = new Team();
-            team2.setName("ManCity");
-            em.persist(team2);
+            /** 즉시로딩의 문제점
+             * 즉시로딩에서 가장 큰 문제는 JPQL 사용시 N+1 문제를 야기한다.
+             * JPQL을 사용하면 즉시 번역되서 DB에 쿼리가 전달된다.
+             * DB에서 반환값이 만약 Member라면 JPA에서는 Member엔티티에 Team컬럼이 즉시로딩인것을 확인하고 다시 조회한다.
+             * 그렇게 되면 쿼리는 1개를 짯는데 추가쿼리가 더 생성되는 N+1 문제가 생긴다.
+             Team team1 = new Team();
+             team1.setName("ManUtd");
+             em.persist(team1);
 
-            Member member = new Member();
-            member.setUsername("Ronaldo");
-            member.setTeam(team1);
-            em.persist(member);
+             Team team2 = new Team();
+             team2.setName("ManCity");
+             em.persist(team2);
 
-            Member member2 = new Member();
-            member2.setUsername("Haland");
-            member2.setTeam(team2);
-            em.persist(member2);
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setTeam(team1);
+             em.persist(member);
 
-            em.flush();
-            em.clear();
+             Member member2 = new Member();
+             member2.setUsername("Haland");
+             member2.setTeam(team2);
+             em.persist(member2);
 
-//            Member m = em.find(Member.class, member.getId());
-            List<Member> result = em.createQuery("select m from Member m ", Member.class).getResultList();
+             em.flush();
+             em.clear();
 
-            System.out.println("====================");
-            System.out.println("team1.getName() = " + team1.getName());
-            System.out.println("team2.getName() = " + team2.getName());
-            System.out.println("====================");
+             //            Member m = em.find(Member.class, member.getId());
+             List<Member> result = em.createQuery("select m from Member m ", Member.class).getResultList();
+
+             System.out.println("====================");
+             System.out.println("team1.getName() = " + team1.getName());
+             System.out.println("team2.getName() = " + team2.getName());
+             System.out.println("====================");
+             */
+
+            /** 영속성 전이 : CASCADE
+             * 영속성 전이를 사용하지 않을 때
+             Child child1 = new Child();
+             Child child2 = new Child();
+
+             Parent parent = new Parent();
+             parent.addChild(child1);
+             parent.addChild(child2);
+
+             em.persist(parent);
+             em.persist(child1);
+             em.persist(child2);
+             * 하지만 cascade = CascadeType.ALL 옵션을 사용하면 한번만 persist해도 자식 엔티티까지 persist해준다
+             Child child1 = new Child();
+             Child child2 = new Child();
+
+             Parent parent = new Parent();
+             parent.addChild(child1);
+             parent.addChild(child2);
+
+             em.persist(parent);
+             //            em.persist(child1);
+             //            em.persist(child2);
+             */
+
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
