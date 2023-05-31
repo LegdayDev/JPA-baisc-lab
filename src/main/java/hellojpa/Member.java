@@ -20,6 +20,13 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "TEAM_ID") //연관관계의 주인이 아닌 읽기전용매핑으로 만듬.
     private Team team;
 
+    //Period(기간)
+    @Embedded
+    private Period workPeriod;
+
+    //Address(주소)
+    @Embedded
+    private Address homeAddress;
 
     public Long getId() {
         return id;
@@ -45,4 +52,19 @@ public class Member extends BaseEntity {
         this.team = team;
     }
 
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
 }

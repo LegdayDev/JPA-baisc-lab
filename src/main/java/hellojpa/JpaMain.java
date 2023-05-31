@@ -418,23 +418,31 @@ public class JpaMain {
              em.persist(parent);
              //            em.persist(child1);
              //            em.persist(child2);
+             * 고아객체 : 부모엔티티가 사라지면 자식엔티티는 고아가 된다.
+             * orphanRemoval = true 옵션을 사용한다.
+             Child child1 = new Child();
+             Child child2 = new Child();
+
+             Parent parent = new Parent();
+             parent.addChild(child1);
+             parent.addChild(child2);
+
+             em.persist(parent);
+
+             em.flush();
+             em.clear();
+
+             Parent findParent = em.find(Parent.class, parent.getId());
+             findParent.getChildList().remove(0);
+             System.out.println("==========DELETE 쿼리============");
              */
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("Ronaldo");
+            member.setHomeAddress(new Address("city","street","zipcode"));
+            member.setWorkPeriod(new Period());
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-            System.out.println("==========DELETE 쿼리============");
+            em.persist(member);
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
