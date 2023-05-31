@@ -478,7 +478,8 @@ public class JpaMain {
             member2.setHomeAddress(address);
             em.persist(member2);
 
-            member.getHomeAddress().setCity("newCity");
+            // address에서 수정자(setter)를 지웠기 때문에 생성자 시점 이후로 수정이 안된다.
+//            member.getHomeAddress().setCity("newCity");
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
