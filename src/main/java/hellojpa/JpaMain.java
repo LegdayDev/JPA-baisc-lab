@@ -464,22 +464,23 @@ public class JpaMain {
              em.persist(member2);
 
              member.getHomeAddress().setCity("newCity");
+             * 불변객체로 만들면 부작용을 없앨 수 있다.
+             * 수정자(setter)를 생성하지 않던가, private로 지정하여 접근불가능하게 만들면된다.
+             Address address = new Address("City", "Street", "10000");
+
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(address);
+             em.persist(member);
+
+             Member member2 = new Member();
+             member2.setUsername("Messi");
+             member2.setHomeAddress(address);
+             em.persist(member2);
+
+             // address에서 수정자(setter)를 지웠기 때문에 생성자 시점 이후로 수정이 안된다.
+             //            member.getHomeAddress().setCity("newCity");
              */
-
-            Address address = new Address("City", "Street", "10000");
-
-            Member member = new Member();
-            member.setUsername("Ronaldo");
-            member.setHomeAddress(address);
-            em.persist(member);
-
-            Member member2 = new Member();
-            member2.setUsername("Messi");
-            member2.setHomeAddress(address);
-            em.persist(member2);
-
-            // address에서 수정자(setter)를 지웠기 때문에 생성자 시점 이후로 수정이 안된다.
-//            member.getHomeAddress().setCity("newCity");
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){

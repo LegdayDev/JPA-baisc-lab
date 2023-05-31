@@ -19,15 +19,26 @@ public class Address {
     }
 
     //setter를 없애든 private 로 만들어도 된다.
+
+    private void setCity(String city) {this.city = city;}
+
+    private void setStreet(String street) {this.street = street;}
+
+    private void setZipcode(String zipcode) {this.zipcode = zipcode;}
+
     public String getCity() {
         return city;
     }
+
 
     public String getStreet() {
         return street;
     }
 
+
     public String getZipcode() {
         return zipcode;
     }
+
+
 }
