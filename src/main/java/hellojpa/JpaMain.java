@@ -437,12 +437,48 @@ public class JpaMain {
              System.out.println("==========DELETE 쿼리============");
              */
 
+            /** 임베디드 값 타입
+             * 공통된 속성들을 재사용하고 다른 엔티티에서도 사용하기 위해 기본값 타입들을 모아서 새로운 값 타입을 만든다
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(new Address("city","street","zipcode"));
+             member.setWorkPeriod(new Period());
+
+             em.persist(member);
+             */
+
+            /** 객체 타입과 불변 객체
+             * 하나의 임베디드 타입을 여러 엔티티가 공유하고 있을때는 임베디드 값 타입을 복사하여 사용하면 된다.
+             Address address = new Address("City", "Street", "10000");
+
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(address);
+             em.persist(member);
+
+             //부작용을 막기 위해서는 새로운 엔티티를 생성해서 써야한다.
+             Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getStreet());
+             Member member2 = new Member();
+             member2.setUsername("Messi");
+             member2.setHomeAddress(copyAddress);
+             em.persist(member2);
+
+             member.getHomeAddress().setCity("newCity");
+             */
+
+            Address address = new Address("City", "Street", "10000");
+
             Member member = new Member();
             member.setUsername("Ronaldo");
-            member.setHomeAddress(new Address("city","street","zipcode"));
-            member.setWorkPeriod(new Period());
-
+            member.setHomeAddress(address);
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUsername("Messi");
+            member2.setHomeAddress(address);
+            em.persist(member2);
+
+            member.getHomeAddress().setCity("newCity");
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
