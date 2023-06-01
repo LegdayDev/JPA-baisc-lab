@@ -482,6 +482,82 @@ public class JpaMain {
              //            member.getHomeAddress().setCity("newCity");
              */
 
+            /** 값 타입 컬렉션
+             * 값 타입 컬렉션은 값 타입을 하나 이상 저장할때 사용한다(자바 컬렉션과 똑같다)
+             * 관계형 DB에서는 컬렉션을 담아두지 못하므로 별도의 테이블을 생성하여 사용한다.
+             * 1) 값 타입 저장 예제
+             * 컬렉션에 값을 넣어두고 메인 엔티티만 persist하면 다른 컬렉션들도 insert 쿼리가 나간다.
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(new Address("City1", "Street", "100000"));
+
+             member.getFavoriteFoods().add("닭가슴살");
+             member.getFavoriteFoods().add("고구마");
+             member.getFavoriteFoods().add("브로콜리");
+
+             member.getAddressesHistory().add(new Address("Old1", "Street", "100000"));
+             member.getAddressesHistory().add(new Address("Old2", "Street", "100000"));
+
+             em.persist(member);
+             * 2) 값 타입 조회 예제
+             * 값 타입 조회를 할 때는 기본이 지연로딩이다.
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(new Address("City1", "Street", "100000"));
+
+             member.getFavoriteFoods().add("닭가슴살");
+             member.getFavoriteFoods().add("고구마");
+             member.getFavoriteFoods().add("브로콜리");
+
+             member.getAddressesHistory().add(new Address("Old1", "Street", "100000"));
+             member.getAddressesHistory().add(new Address("Old2", "Street", "100000"));
+
+             em.persist(member);
+
+             em.flush();
+             em.clear();
+             System.out.println("================Strat===============");
+             Member findMember = em.find(Member.class, member.getId());
+             * 3) 값 타입 수정 예제
+             Member member = new Member();
+             member.setUsername("Ronaldo");
+             member.setHomeAddress(new Address("City1", "Street", "100000"));
+
+             member.getFavoriteFoods().add("닭가슴살");
+             member.getFavoriteFoods().add("고구마");
+             member.getFavoriteFoods().add("브로콜리");
+
+             member.getAddressesHistory().add(new Address("Old1", "Street", "100000"));
+             member.getAddressesHistory().add(new Address("Old2", "Street", "100000"));
+
+             em.persist(member);
+
+             em.flush();
+             em.clear();
+
+             System.out.println("================Strat===============");
+             Member findMember = em.find(Member.class, member.getId());
+
+             //City1 -> Manchester
+             //            findMember.getHomeAddress().setCity("Manchester") -> 잘못된 방법
+
+             //Setter(수정자)를 사용하면 부작용(Side Effect)가 발생하므로 새로운 값을 대입해서 수정해야한다.
+             findMember.setHomeAddress(new Address("Manchester","Street","100000"));
+
+             //닭가슴살 -> 부채살
+             //컬렉션에 있는 값 타입을 수정할려면 지우고 새로 추가해야한다.
+             findMember.getFavoriteFoods().remove("닭가슴살");
+             findMember.getFavoriteFoods().add("부채살");
+
+             //old1 -> new1
+             //컬렉션마다 다르긴하지만 똑같은 Object를 가져와서 equals를 하기 때문에 그대로 가져와야한다.
+             findMember.getAddressesHistory().remove(new Address("Old1", "Street", "100000"));
+             findMember.getAddressesHistory().add(new Address("new1", "Street", "100000"));
+             */
+
+
+
+
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
             tx.rollback(); //문제가 생기면 rollback
