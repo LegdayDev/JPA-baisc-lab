@@ -556,7 +556,24 @@ public class JpaMain {
              */
 
 
+            /** JPQL 소개
+             * where절을 이요한 조회시에는 find() 메서드로 원하는 데이터를 찾을 수 없다.
+             *
+             List<Member> result = em.createQuery(
+             "select m from Member m where m.username like '%Ronaldo%'", Member.class
+             ).getResultList();
 
+             for (Member member : result) {
+             System.out.println("member = " + member.getUsername());
+             }
+             * Criteria
+             * 자바코드로 JPQL을 사용하여 동적쿼리에 유용함이 있지만 너무 복잡해서 유지보수가 힘들다
+             *
+             * QueryDSL
+             * Criteria 와 마찬가지로 자바코드로 JQPL을 작성한다.
+             * 자바코드로 작성하기 때문에 컴파일 시점에 문법오류를 찾을 수 있따.
+             * Criteria에 비해 단순하고 쉽기 때문에 실무사용권장 !!!
+             */
 
             tx.commit(); //트랜잭션 종료
         }catch (Exception e){
